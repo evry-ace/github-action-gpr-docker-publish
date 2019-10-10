@@ -39,9 +39,12 @@ fi
 echo ${INPUT_PASSWORD} | docker login -u ${INPUT_USERNAME} --password-stdin docker.pkg.github.com
 
 # Set Local Variables
-shortSHA=$(echo "${GITHUB_SHA}" | cut -c1-12)
+if [[ -z "$INPUT_IMAGE_TAG" ]]; then
+  INPUT_IMAGE_TAG=$(echo "${GITHUB_SHA}" | cut -c1-12)
+fi
+
 BASE_NAME="docker.pkg.github.com/${GITHUB_REPOSITORY}/${INPUT_IMAGE_NAME}"
-SHA_NAME="${BASE_NAME}:${shortSHA}"
+SHA_NAME="${BASE_NAME}:${INPUT_IMAGE_TAG}"
 
 # Add Arguments For Caching
 BUILDPARAMS=""

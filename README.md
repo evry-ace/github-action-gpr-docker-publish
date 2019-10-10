@@ -1,4 +1,4 @@
-## This Action Publishes Docker Images to the [GitHub Package Registry](https://github.com/features/package-registry).  
+## This Action Publishes Docker Images to the [GitHub Package Registry](https://github.com/features/package-registry).
 
 ### Background On The GitHub Package Registry (GPR):
 
@@ -8,11 +8,11 @@ The GitHub Package Registry allows you to develop your code and host your packag
 
 [The docs](https://help.github.com/en/articles/configuring-docker-for-use-with-github-package-registry) also contain relevant such as how to authenticate and naming conventions.  Some noteable items about publishing Docker Images on GPR:
 
-- Docker Images are tied to a repository.  
+- Docker Images are tied to a repository.
 - All images are named with the following nomenclature:
 
     docker.pkg.github.com/{OWNER}/{REPOSITORY}/{IMAGE_NAME}:{TAG}
-    
+
 `OWNER` and `REPOSITORY` refer to a unique repository on GitHub, such as `tensorflow/tensorflow`.
 
 
@@ -37,13 +37,13 @@ name: Publish Docker image to GitHub Package Registry
 on: push
 jobs:
   build:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     steps:
 
     - name: Copy Repo Files
       uses: actions/checkout@master
 
-     #This Action Emits 2 Variables, IMAGE_SHA_NAME and IMAGE_URL 
+     #This Action Emits 2 Variables, IMAGE_SHA_NAME and IMAGE_URL
      #which you can reference in subsequent steps
     - name: Publish Docker Image to GPR
       uses: machine-learning-apps/gpr-docker-publish@master
@@ -55,7 +55,7 @@ jobs:
         DOCKERFILE_PATH: 'argo/gpu.Dockerfile'
         BUILD_CONTEXT: 'argo/'
 
-    # This second step is illustrative and shows how to reference the 
+    # This second step is illustrative and shows how to reference the
     # output variables.  This is completely optional.
     - name: Show outputs of pervious step
       run: |
@@ -70,19 +70,20 @@ jobs:
 
 1. `USERNAME` the login username, most likely your github handle.  This username must have write access to the repo where the action is called.
 2. `PASSWORD` Your GitHub password that has write access to the repo where this action is called.
-3. `IMAGE_NAME` is the name of the image you would like to push  
+3. `IMAGE_NAME` is the name of the image you would like to push
 4. `DOCKERFILE_PATH`: The full path (including the filename) relative to the root of the repository that contains the Dockerfile that specifies your build.
 5. `BUILD_CONTEXT`: The directory for the build context.  See these [docs](https://docs.docker.com/engine/reference/commandline/build/) for more information on the definition of build context.
 
 ## Optional Inputs
 
-1. `cache`: if value is `true`, attempts to use the last pushed image as a cache.  Default value is `false`.
+1. `CACHE`: if value is `true`, attempts to use the last pushed image as a cache.  Default value is `false`.
+2. `IMAGE_TAG`: custom image tag if you don't want to use the auto-generated one
 
 ## Outputs
 
 You can reference the outputs of an action using [expression syntax](https://help.github.com/en/articles/contexts-and-expression-syntax-for-github-actions), as illustrated in the Example Pipeline above.
 
-1. `IMAGE_SHA_NAME`: This is the `{Image_Name}:{shortSHA}` as described above.
+1. `IMAGE_SHA_NAME`: This is the `{Image_Name}:{Image_Tag}` as described above.
 2. `IMAGE_URL`: This is the URL on GitHub where you can view your hosted Docker images.  This will always be located at `https://github.com/{OWNER}/{REPOSITORY}/packages` in reference to the repository where the action was called.
 
 These outputs are merely provided as convenience incase you want to use these values in subsequent steps.

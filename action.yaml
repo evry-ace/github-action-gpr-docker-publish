@@ -11,6 +11,9 @@ inputs:
   image_name:
     description: name of the image.  Example - myContainer
     require: true
+  image_tag:
+    description: custom tag for the image
+    require: false
   build_context:
     description: the path in your repo that will serve as the build context
     require: true
@@ -27,7 +30,7 @@ outputs:
   IMAGE_SHA_NAME:
     description: name of the Docker Image including the tag
   IMAGE_URL:
-    description: the URL where you can view the hosted image on GitHub. 
+    description: the URL where you can view the hosted image on GitHub.
 branding:
   color: 'purple'
   icon: 'layers'
